@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { commerce } from './lib/commerce'
-
-
-// eslint-disable-next-line
 import { Products, NavBar, Cart } from './components'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 const App = () => {
-	// eslint-disable-next-line
 	const [ products, setProducts ] = useState([])
 	const [ cart, setCart ] = useState({})
 
@@ -20,7 +17,6 @@ const App = () => {
 		setCart(await commerce.cart.retrieve())
 	}
 
-	// eslint-disable-next-line
 	const handleAddToCart = async (productId, quantity) => {
 		const item = await commerce.cart.add(productId, quantity)
 
@@ -32,14 +28,21 @@ const App = () => {
 		fetchCart()
 	}, [])
 
-	console.log(cart)
-
 	return (
-		<div>
-			<NavBar totalItems={ cart.total_items } />
-			{/* <Products products={ products } onAddToCart={handleAddToCart} />	 */}
-			<Cart cart={cart} />
-		</div>
+		<Router>	
+			<div>
+				<NavBar totalItems={ cart.total_items } />
+				<Switch>
+					<Route exact path="/">
+						<Products products={ products } onAddToCart={ handleAddToCart } />
+					</Route>
+
+					<Route exact path="/cart">
+						<Cart cart={ cart } />
+					</Route>	
+				</Switch>
+			</div>
+		</Router>
 	)
 }
 
