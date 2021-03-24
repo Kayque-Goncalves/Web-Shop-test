@@ -10,7 +10,7 @@ import { commerce } from '../../../lib/commerce'
 
 const steps = [ 'Shipping address', 'Payment details' ]
 
-const Checkout = ({ cart, order, onCaputureCheckout, error }) => {
+const Checkout = ({ cart, order, handleCaptureCheckout, error }) => {
 
     const [ activeStep, setActiveStep ] = useState(0)
     const [ checkoutToken, setCheckoutToken ] = useState(null)
@@ -21,18 +21,21 @@ const Checkout = ({ cart, order, onCaputureCheckout, error }) => {
     const classes = useStyles()
 
     useEffect(() => {
-        const generateToken = async () => {
+        if (cart.id) {
+          const generateToken = async () => {
             try {
-                const token = await commerce.checkout.generateToken(cart.id, { type: 'cart' })
-
-                setCheckoutToken(token)
-            } catch (error) {
-                history.purchaseState('/')
+              const token = await commerce.checkout.generateToken(cart.id, { type: 'cart' });
+    
+              setCheckoutToken(token);
+            } catch {
+              if (activeStep !== steps.length) history.push('/');
             }
+          };
+    
+          generateToken();
         }
-        
-        generateToken()
-    }, [cart])
+        // eslint-disable-next-line
+      }, [cart])
 
     const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1)
     const prevStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1)
@@ -89,7 +92,7 @@ const Checkout = ({ cart, order, onCaputureCheckout, error }) => {
             shippingData={shippingData} 
             nextStep={nextStep} 
             prevStep={prevStep}
-            onCaputureCheckout={ onCaputureCheckout } 
+            handleCaptureCheckout={ handleCaptureCheckout } 
             timeout={ timeout }
         />
 

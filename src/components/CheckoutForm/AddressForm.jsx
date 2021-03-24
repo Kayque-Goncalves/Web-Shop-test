@@ -52,6 +52,7 @@ const AddressForm = ({ checkoutToken, next }) => {
     // useEffect section
     useEffect(() => {
         fetchShippingCountries(checkoutToken.id)
+        // eslint-disable-next-line
     }, [])
 
     useEffect(() => {
@@ -60,6 +61,7 @@ const AddressForm = ({ checkoutToken, next }) => {
 
     useEffect(() => {
         if(shippingSubdivision) fetchShippingOptions(checkoutToken.id, shippingCountry, shippingSubdivision)
+        // eslint-disable-next-line
     }, [shippingSubdivision])
 
     return (
