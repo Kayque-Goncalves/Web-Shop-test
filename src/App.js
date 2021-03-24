@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { commerce } from './lib/commerce'
 
 
-import { Products, NavBar } from './components'
+// eslint-disable-next-line
+import { Products, NavBar, Cart } from './components'
 
 const App = () => {
+	// eslint-disable-next-line
 	const [ products, setProducts ] = useState([])
 	const [ cart, setCart ] = useState({})
 
@@ -14,10 +16,11 @@ const App = () => {
 		setProducts(data)
 	}
 
-	const fetchCart = async () =>{
+	const fetchCart = async () => {
 		setCart(await commerce.cart.retrieve())
 	}
 
+	// eslint-disable-next-line
 	const handleAddToCart = async (productId, quantity) => {
 		const item = await commerce.cart.add(productId, quantity)
 
@@ -29,10 +32,13 @@ const App = () => {
 		fetchCart()
 	}, [])
 
+	console.log(cart)
+
 	return (
 		<div>
-			<NavBar totalItems={cart.total_items} />
-			<Products products={products} onAddToCart={handleAddToCart} />	
+			<NavBar totalItems={ cart.total_items } />
+			{/* <Products products={ products } onAddToCart={handleAddToCart} />	 */}
+			<Cart cart={cart} />
 		</div>
 	)
 }
