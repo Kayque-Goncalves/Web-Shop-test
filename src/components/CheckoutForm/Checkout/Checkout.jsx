@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 // eslint-disable-next-line
-import { Paper, Stepper, Step, StepLabel, Typography, CircularPorgress, Divider, Button } from '@material-ui/core'
+import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 
 import useStyles from './styles'
 import AddressForm from '../AddressForm'
@@ -24,7 +25,7 @@ const Checkout = ({ cart, order, onCaputureCheckout, error }) => {
 
                 setCheckoutToken(token)
             } catch (error) {
-
+                console.log(error)
             }
         }
         
@@ -40,11 +41,29 @@ const Checkout = ({ cart, order, onCaputureCheckout, error }) => {
         nextStep()
     }
 
-    const Confirmation = () => (
-        <div>
-            Confirmation
+    let Confirmation = () => order.custumer ?(
+        <>
+            <div>
+                <Typography variant="h5"> Thank you for your purchase, { order.custumer.firstname } { order.custumer.lastname } </Typography>
+                <Divider className={ classes.divider } />
+                <Typography variant="subtitle2"> Order ref: { order.customer_reference } </Typography>
+            </div>
+            <br />
+            <Button component={ Link } to="/" variant="outlined" type="button"> Back to home </Button>
+        </>
+    ) : (
+        <div classeName={ classes.spinner }>
+            <CircularProgress />
         </div>
     )
+
+    if(error) {
+        <>
+            <Typography variant="h5">Error: {error}</Typography>
+            <br />
+            <Button component={ Link } to="/" variant="outlined" type="button"> Back to home </Button>
+        </>
+    }
 
     const Form = () => activeStep === 0
         ? <AddressForm checkoutToken={ checkoutToken } next={ next } />
