@@ -2,7 +2,7 @@
   E-commerce app with Stripe
 </h1>
 
-That is a project made to use the Stripe API and build a E-Commerce app in React.
+This is a project made to use the Stripe API and build a E-Commerce app in React.
 
 ## Building
 
